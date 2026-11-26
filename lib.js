@@ -1,6 +1,7 @@
 "use strict";
 // Shared by the dashboard (dash.html) and the driver page (driver.html). No third-party code here.
 // Nothing is ever put on the page as HTML: every element is built with el(), so order text can never run as code.
+if (top !== self) { document.documentElement.textContent = ""; throw new Error("This page cannot be shown inside another page."); }   // no clickjacking
 const LOOP_URL = "https://vfphzezqnegvitnvqpes.supabase.co";
 const LOOP_KEY = "sb_publishable_ibhRhkM12PhBXl18dYrObQ_ZcFZ-NtB";   // public by design: it opens nothing by itself
 const PUBLIC = { dash: "https://blooming-treasure.github.io/orders/", driver: "https://blooming-treasure.github.io/deliveries/" };
@@ -103,6 +104,7 @@ function ago(iso) {
   const s = Math.max(0, (Date.now() - new Date(iso)) / 1000);
   return s < 90 ? "just now" : s < 3600 ? Math.round(s / 60) + " min ago" : s < 86400 ? Math.round(s / 3600) + " h ago" : Math.round(s / 86400) + " d ago";
 }
+const safeUrl = u => /^https:\/\//i.test(u || "") ? u : null;      // links that came from other systems: https only
 const phoneNice = p => { const d = String(p || "").replace(/\D/g, "").slice(-10); return d.length === 10 ? `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}` : p || ""; };
 async function copyText(text, what) { try { await navigator.clipboard.writeText(text); toast((what || "Copied") + " copied"); } catch (e) { toast("Could not copy", true); } }
 
@@ -162,7 +164,7 @@ async function mediaUrl(path) {                           // a file -> a private
 function mediaTile(m) {
   const video = m.type === "video", ready = m.state === "ready";
   const t = el("button", { class: "tile" + (video ? " vid" : ""), type: "button", title: [m.kind === "bloom" ? "Arrangement" : m.kind === "proof" ? "Delivery proof" : "Other", m.by, fmtStamp(m.at), m.note].filter(Boolean).join(" · "),
-    onclick: () => ready ? viewMedia(m) : toast(m.state === "archived" ? "This video was moved to the shop PC's Blooming Treasure Orders folder." : "The shop PC is still compressing this video.") });
+    onclick: () => ready ? viewMedia(m) : toast(m.state === "archived" ? "This video is over 60 days old: it is kept on the shop PC, in OneDrive > Blooming Treasure Orders." : "The shop PC is still compressing this video. It needs to be switched on.") });
   if (ready || (video && m.state !== "uploaded")) mediaUrl(video ? m.path + ".jpg" : m.path).then(u => t.prepend(el("img", { src: u, alt: "" }))).catch(() => {});
   t.append(el("span", { class: "tag " + m.kind }, m.kind === "bloom" ? "Arrangement" : m.kind === "proof" ? "Proof" : "Other"));
   if (video) t.append(el("span", { class: "badge" }, m.state === "uploaded" ? "Processing…" : m.state === "archived" ? "On shop PC" : icon("play", 16)));
