@@ -88,11 +88,12 @@ async function hello() {
 }
 
 // ---------------------------------------------------------------- small helpers
-function toast(msg, bad) {
+function toast(msg, bad, action) {      // action = [label, fn]: a button inside the notice (e.g. Undo)
   let t = document.getElementById("toast");
   if (!t) document.body.append(t = el("div", { id: "toast", role: "status" }));
-  t.textContent = msg; t.className = bad ? "bad" : ""; t.hidden = false;
-  clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, bad ? 6000 : 3200);
+  t.replaceChildren(msg, action ? el("button", { type: "button", onclick: () => { t.hidden = true; action[1](); } }, action[0]) : "");
+  t.className = bad ? "bad" : ""; t.hidden = false;
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, bad ? 6000 : action ? 9000 : 3200);
 }
 const money = v => v == null || v === "" ? "" : "$" + Number(v).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const fmtTime = iso => iso ? new Date(iso).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }).replace(" ", "").toLowerCase() : "";
