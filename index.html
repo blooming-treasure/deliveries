@@ -12,10 +12,11 @@
 <!-- Only this site's own script files may run, and the page may only talk to the order database. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' blob: data:; media-src blob:; connect-src https://vfphzezqnegvitnvqpes.supabase.co; base-uri 'none'; form-action 'none'">
 <title>Deliveries · Blooming Treasure</title>
+<link rel="icon" href="data:,">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500&family=Instrument+Sans:wght@400;500;600&display=swap">
 <style>
 :root{--ivory:#FBF7EF;--cream:#F2EADB;--ink:#22312A;--green:#2F5D45;--leaf:#7FA68C;--peony:#C9617F;--blush:#F4DCE2;
-  --mute:#6F7A6E;--line:#E4DBCB;--white:#fff;--warn:#8A4B1E;--warn-bg:#FBEBDD;
+  --mute:#5F695E;--line:#E4DBCB;--white:#fff;--warn:#8A4B1E;--warn-bg:#FBEBDD;
   --display:"Fraunces",Georgia,serif;--body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45}
@@ -23,7 +24,7 @@ main{max-width:520px;margin:0 auto;padding:16px 14px max(40px,env(safe-area-inse
 h1{font-family:var(--display);font-weight:500;font-size:1.5rem;margin:6px 4px 0;color:var(--green)}
 h2{margin:8px 4px 0;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
 .tk{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px}
-.tk.done{opacity:.75}
+.tk.done{background:var(--ivory)}
 .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
 .top b{font-size:1.08rem}
 .pill{border-radius:999px;padding:2px 10px;font-size:.75rem;font-weight:600;background:#DDEADF;color:var(--green);white-space:nowrap}
@@ -43,7 +44,7 @@ h2{margin:8px 4px 0;font-size:.76rem;letter-spacing:.08em;text-transform:upperca
 .share::before{content:"";flex:none;width:9px;height:9px;border-radius:50%;background:#2FA36B}
 .share.off::before{background:#C98562}
 .share span{flex:1}
-.share button{font:inherit;font-weight:600;background:none;border:0;padding:4px 0;color:inherit;text-decoration:underline;cursor:pointer}
+.share button{font:inherit;font-weight:600;background:none;border:0;padding:11px 6px;margin:-8px 0;color:inherit;text-decoration:underline;cursor:pointer}
 .up{font-size:.86rem;color:var(--mute);display:flex;flex-direction:column;gap:5px}
 .bar2{height:6px;border-radius:3px;background:var(--line);overflow:hidden}.bar2 i{display:block;height:100%;background:var(--green)}
 .empty,.center{color:var(--mute);text-align:center;padding:18px}

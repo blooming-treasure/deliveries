@@ -101,7 +101,7 @@ function toast(msg, bad, action) {      // action = [label, fn]: a button inside
   let t = document.getElementById("toast");
   if (!t) document.body.append(t = el("div", { id: "toast", role: "status" }));
   t.replaceChildren(msg, action ? el("button", { type: "button", onclick: () => { t.hidden = true; action[1](); } }, action[0]) : "");
-  t.className = bad ? "bad" : ""; t.hidden = false;
+  t.className = bad ? "bad" : ""; t.setAttribute("role", bad ? "alert" : "status"); t.hidden = false;
   clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, bad ? 6000 : action ? 9000 : 3200);
 }
 const money = v => v == null || v === "" ? "" : "$" + Number(v).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -181,7 +181,7 @@ function mediaTile(m) {
   return t;
 }
 async function viewMedia(m) {
-  const box = el("div", { class: "lightbox", onclick: e => e.target === box && box.remove() }, el("div", { class: "center" }, "Loading…"));
+  const box = el("div", { class: "lightbox", role: "dialog", "aria-modal": "true", "aria-label": "Photo or video", onclick: e => e.target === box && box.remove() }, el("div", { class: "center" }, "Loading…"));
   document.body.append(box);
   try {
     const url = await mediaUrl(m.path), name = `${m.kind}-${String(m.at).slice(0, 10)}.${m.type === "video" ? "mp4" : "jpg"}`;

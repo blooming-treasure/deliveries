@@ -119,7 +119,8 @@ async function load() {
     else if (e.code === "42501") { data = null; note("This link cannot open the driver page", "Ask the shop for a driver link."); }
   }
 }
-const refresh = async () => { if (data && !busy && askProblem == null) { await load(); render(); } };
+// Redraw only when something changed: rebuilding the page under a finger can swallow a tap.
+const refresh = async () => { if (data && !busy && askProblem == null) { const before = JSON.stringify(data); await load(); if (JSON.stringify(data) !== before) render(); } };
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") refresh(); else syncGeo(); });   // back from the maps app
 async function start() {
   if (!readLink(true)) return note("Deliveries", "Open this page from your personal driver link.");
