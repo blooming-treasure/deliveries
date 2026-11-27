@@ -6,6 +6,10 @@ const LOOP_URL = "https://vfphzezqnegvitnvqpes.supabase.co";
 const LOOP_KEY = "sb_publishable_ibhRhkM12PhBXl18dYrObQ_ZcFZ-NtB";   // public by design: it opens nothing by itself
 const PUBLIC = { dash: "https://blooming-treasure.github.io/orders/", driver: "https://blooming-treasure.github.io/deliveries/" };
 
+// Screens are built with `cond && node`: when cond is false the browser's own replaceChildren / append would print the
+// word "false" or "null" on the page (it did, on Deliveries). Make both skip empty values and accept lists.
+for (const m of ["replaceChildren", "append"]) { const f = Element.prototype[m];
+  Element.prototype[m] = function (...kids) { return f.apply(this, kids.flat(3).filter(k => k != null && k !== false)); }; }
 const el = (tag, attrs = {}, ...kids) => {
   const n = document.createElement(tag);
   for (const [k, v] of Object.entries(attrs || {})) {
@@ -19,6 +23,9 @@ const ICONS = {
   today: "M7 3v3M17 3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z",
   prep: "M9 4h6v3H9zM9 5H6v15h12V5h-3M8.5 13l2 2 4-4.5",
   card: "M4 20l4-1L19 8l-3-3L5 16l-1 4zM14 7l3 3",
+  ribbon: "M7 3h10v18l-5-4-5 4zM10 8h4M10 11.5h4",
+  more: "M4 6h16M4 12h16M4 18h16",
+  chat: "M4 5h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H10l-5 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z",
   orders: "M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01",
   deliveries: "M3 7h11v9H3zM14 10h4l3 3v3h-7zM7 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM17 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4z",
   customers: "M16 19v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M9.5 10a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM21 19v-1a4 4 0 0 0-3-3.9M15.5 3.2a3.5 3.5 0 0 1 0 6.6",
